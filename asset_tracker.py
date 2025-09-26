@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 DB_FILE = "assets.db"
-DEFAULT_ITEM_TYPES = ["Mouse", "Keyboard", "Controller", "Mousepad", "Cable/Wire"]
+DEFAULT_ITEM_TYPES = ["Mouse", "Keyboard", "Controller", "Headset"]
 
 # ---------------------------- Database Layer ---------------------------- #
 class Database:
@@ -215,7 +215,7 @@ class AssetTrackerApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.admin_verified = False  # ask once per session
-        self.setWindowTitle("Esports Arena Asset Tracker")
+        self.setWindowTitle("Eagle Eye")
         self.setMinimumSize(980, 640)
         self.db = Database()
         self._init_ui()
