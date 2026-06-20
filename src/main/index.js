@@ -86,6 +86,66 @@ ipcMain.handle('get-assets', () => {
     ).all()
 })
 
+ipcMain.handle('add-asset', (event, asset) => {
+  const tag = asset.assetTag.trim().toUpperCase()
+
+  db.prepare(`
+    INSERT INTO assets (asset_tag, name, type, serial_number, status, location, notes)
+    VALUES (?, ?, ?, ?, 'Available', ?, ?)
+  `).run(
+    tag,
+    asset.name,
+    asset.type || 'Unknown',
+    asset.serialNumber || '',
+    asset.location || 'Esports Lab',
+    asset.notes || ''
+  )
+
+  return db.prepare('SELECT * FROM assets ORDER BY asset_tag').all()
+})
+
+ipcMain.handle('delete-asset', (event, assetTag) => {
+  const tag = assetTag.trim().toUpperCase()
+
+  db.prepare('DELETE FROM current_checkouts WHERE asset_tag = ?').run(tag)
+  db.prepare('DELETE FROM assets WHERE asset_tag = ?').run(tag)
+
+  db.prepare(`
+    INSERT INTO logs (student_id, asset_tag, action)
+    VALUES ('ADMIN', ?, 'Deleted Asset')
+  `).run(tag)
+
+  return db.prepare('SELECT * FROM assets ORDER BY asset_tag').all()
+})
+
+ipcMain.handle('update-asset', (event, asset) => {
+  const tag = asset.assetTag.trim().toUpperCase()
+
+  db.prepare(`
+    UPDATE assets
+    SET name = ?,
+        type = ?,
+        serial_number = ?,
+        location = ?,
+        notes = ?
+    WHERE asset_tag = ?
+  `).run(
+    asset.name,
+    asset.type || 'Unknown',
+    asset.serialNumber || '',
+    asset.location || 'Esports Lab',
+    asset.notes || '',
+    tag
+  )
+
+  db.prepare(`
+    INSERT INTO logs (student_id, asset_tag, action)
+    VALUES ('ADMIN', ?, 'Updated Asset')
+  `).run(tag)
+
+  return db.prepare('SELECT * FROM assets ORDER BY asset_tag').all()
+})
+
 app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
