@@ -8,16 +8,20 @@ const require2 = __cjs_mod__.createRequire(import.meta.url);
 const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1400,
+    height: 900,
+    backgroundColor: "#020617",
     webPreferences: {
-      preload: path.join(__dirname$1, "../preload/index.js")
+      preload: path.join(__dirname$1, "../preload/index.mjs")
     }
   });
-  if (process.env.VITE_DEV_SERVER_URL) {
-    win.loadURL(process.env.VITE_DEV_SERVER_URL);
+  if (process.env.ELECTRON_RENDERER_URL) {
+    win.loadURL(process.env.ELECTRON_RENDERER_URL);
   } else {
     win.loadFile(path.join(__dirname$1, "../renderer/index.html"));
   }
 }
 app.whenReady().then(createWindow);
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
+});
