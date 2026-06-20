@@ -1,130 +1,16 @@
-🎮 Esports Arena Asset Tracker
+# React + Vite
 
-A PySide6-based desktop application for managing, tracking, and reporting communal equipment (mice, keyboards, controllers, cables, mousepads, etc.) in an esports arena.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-The app supports adding/removing inventory, checking items in and out, password-protected admin functions, and automatic report generation. Data is persisted locally in an SQLite database (assets.db).
+Currently, two official plugins are available:
 
-✨ Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Inventory Management
+## React Compiler
 
-Add assets by type + ID (e.g., Mouse #1, Keyboard #1).
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Remove assets by ID and type.
+## Expanding the ESLint configuration
 
-Inventory table with live refresh.
-
-Check Out / Check In
-
-Assign items to students with timestamped records.
-
-Validate return by requiring matching student name.
-
-Prevents duplicate checkout of unavailable assets.
-
-Reports
-
-Generate a report of all currently checked-out items.
-
-If no items are checked out, a message confirms "All good".
-
-If items are out, a file named checked_out_report.txt is saved in the same folder as assets.db.
-
-Password Protection
-
-Admin-only access for inventory management (password requested once per launch).
-
-Change admin password securely within the app.
-
-Default password: admin123 (stored in DB, changeable).
-
-Data Persistence
-
-Uses a local SQLite database (assets.db).
-
-Automatically initializes schema if DB doesn’t exist.
-
-Supports composite keys (type + id) so assets can share ID if they are different types.
-
-UI / UX
-
-Dark-styled interface with tabbed layout:
-
-Inventory
-
-Check Out
-
-Check In
-
-Reports & Settings
-
-🚀 Getting Started
-Prerequisites
-
-Python 3.9+
-
-Install dependencies:
-
-pip install PySide6
-
-Running
-python asset_tracker.py
-
-
-The app will create assets.db on first launch if it doesn’t exist.
-
-📦 Building an Executable (Windows)
-
-We recommend PyInstaller:
-
-pip install pyinstaller
-pyinstaller --onefile --windowed --name "EsportsAssetTracker" asset_tracker.py
-
-
-The .exe will be in the dist/ folder.
-
-Optional: Include a starter database with:
-
-pyinstaller --onefile --windowed --add-data "assets.db;." asset_tracker.py
-
-🗄 Database Schema
-
-assets
-
-Column	Type	Notes
-id	INTEGER	Asset ID (composite PK with type)
-type	TEXT	Asset type (Mouse, Keyboard, etc.)
-status	TEXT	"available" or "checked_out"
-checked_out_by	TEXT	Student name (nullable)
-checked_out_at	TEXT	UTC timestamp (nullable)
-
-settings
-
-Key	Value
-admin_password	Current password
-
-history
-| id | asset_id | student_name | action | timestamp |
-
-🔐 Default Credentials
-
-Admin Password: admin123
-
-Change it via the Reports & Settings tab.
-
-📂 Project Structure
-EsportsAssetTracker/
-├── asset_tracker.py   # Main app
-├── assets.db          # SQLite DB (auto-created)
-├── checked_out_report.txt  # Generated on demand
-└── README.md
-
-🛠 Future Improvements
-
-Email reports directly to admins.
-
-Export history logs to CSV/Excel.
-
-Support QR/barcode scanning for fast check-in/out.
-
-Multi-user roles (staff vs. admin).
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
